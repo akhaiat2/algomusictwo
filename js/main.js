@@ -11,7 +11,7 @@ const sampler = new Tone.Sampler({
 
 // Create a drum pattern using a sequence
 const drumPattern = new Tone.Pattern((time, note) => {
-  sampler.triggerAttackRelease(note, '8n', time)
+  sampler.triggerAttackRelease(note, '4n', time)
 }, ['A1', 'A2', 'A3', 'A4'], 'randomOnce')
 
 // Create a bass synth
@@ -19,8 +19,8 @@ const bassSynth = new Tone.MembraneSynth().toDestination()
 
 // Create a bass pattern using a sequence
 const bassPattern = new Tone.Pattern((time, note) => {
-  bassSynth.triggerAttackRelease(note, '8n', time)
-}, ['C2', 'E2', 'G2', 'A2'], 'up')
+  bassSynth.triggerAttackRelease(note, '4n', time)
+}, ['C2', 'E2', 'G2', 'A2'], 'random')
 
 // Create a chord synth
 const chordSynth = new Tone.PolySynth().toDestination()
@@ -33,12 +33,27 @@ const chordPattern = new Tone.Pattern((time, chord) => {
   chordSynth.triggerAttackRelease(chord, '4n', time)
 }, chordProgression, 'random')
 
+// Create an array of vocal samples
+const vocalSamples = [
+  'wav/vocal1.wav'
+]
+
+// Create a vocal sample player
+const vocalPlayer = new Tone.Player().toDestination()
+
 // Create a loop to repeat the drum pattern, bass pattern, and chord pattern
 const loop = new Tone.Loop((time) => {
   drumPattern.start(time)
   bassPattern.start(time)
   chordPattern.start(time)
-}, '4n')
+
+  // Randomly select a vocal sample
+  // const randomIndex = Math.floor(Math.random() * vocalSamples.length)
+  const vocalSample = vocalSamples[0]
+  vocalPlayer.load(vocalSample, () => {
+    vocalPlayer.start(time)
+  })
+}, '8n')
 
 let isLoopRunning = false
 
