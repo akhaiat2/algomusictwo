@@ -1,1 +1,2 @@
-# algomusictwo
+## algomusictwo
+This project focuses on creating a house music generator. Generally, house music is a repetitive 4/4 rhythms with a tempo of around 120 bpm and having origins from Chicago. It is usually composed of instruments such as a hi-hat, claps, snare drums, and bass drums. One can read more about House Music here: https://en.wikipedia.org/wiki/House_music. Since house music is quite an ideal genre for creating loops and repetitions, I believe that using Tone.js to create algorithmic compositions would be an ideal second project. Furthermore, as someone who DJs primarily house music, I believe that this can help me in future performances.
