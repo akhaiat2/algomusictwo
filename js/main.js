@@ -40,26 +40,45 @@ const loop = new Tone.Loop((time) => {
   chordPattern.start(time)
 }, '4n')
 
+let isLoopRunning = false
+
 button.addEventListener('click', () => {
   // Check if the audio context is in a suspended state
   if (Tone.context.state !== 'running') {
     // Resume the audio context on user gesture
     Tone.context.resume().then(() => {
       console.log('Audio context resumed')
-      startLoop()
+      toggleLoop()
     })
   } else {
-    startLoop()
+    toggleLoop()
   }
 })
 
-function startLoop () {
-  // Load the drum samples and start the loop when samples are loaded
-  Tone.loaded().then(() => {
-    console.log('Samples loaded, should start loop')
-    loop.start(0)
-    Tone.Transport.start()
-  })
+function toggleLoop () {
+  if (isLoopRunning) {
+    Tone.Transport.stop()
+    isLoopRunning = false
+    button.textContent = 'Start the Song'
+    console.log('loop stopped')
+  } else {
+    // Generate a random BPM within the range of 120-140
+    const randomBPM = Math.floor(Math.random() * (140 - 120 + 1) + 120)
+
+    // Set the BPM for the loop
+    Tone.Transport.bpm.value = randomBPM
+    console.log(randomBPM + ' bpm')
+
+    // Load the drum samples and start the loop when samples are loaded
+    Tone.loaded().then(() => {
+      console.log('Samples loaded, should start loop')
+      loop.start(0)
+      Tone.Transport.start()
+      isLoopRunning = true
+      button.textContent = 'Stop the Song'
+      console.log('Loop start')
+    })
+  }
 }
 
 // Load the drum samples
