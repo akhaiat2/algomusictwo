@@ -26,7 +26,8 @@ const bassPattern = new Tone.Pattern((time, note) => {
 const chordSynth = new Tone.PolySynth().toDestination()
 
 // Create a chord progression
-const chordProgression = ['C4', 'F4', 'G4', 'C5']
+// const chordProgression = ['C4', 'F4', 'G4', 'C5']
+const chordProgression = ['F4m', 'A#4', 'D#4', 'G#4', 'C#4', 'F4m', 'A#4', 'D#4']
 
 // Create a chord pattern using a sequence
 const chordPattern = new Tone.Pattern((time, chord) => {
@@ -48,12 +49,12 @@ const loop = new Tone.Loop((time) => {
   chordPattern.start(time)
 
   // Randomly select a vocal sample
-  // const randomIndex = Math.floor(Math.random() * vocalSamples.length)
-  const vocalSample = vocalSamples[0]
+  const randomIndex = Math.floor(Math.random() * vocalSamples.length)
+  const vocalSample = vocalSamples[randomIndex]
   vocalPlayer.load(vocalSample, () => {
     vocalPlayer.start(time)
   })
-}, '8n')
+}, '4n')
 
 let isLoopRunning = false
 
@@ -78,7 +79,7 @@ function toggleLoop () {
     console.log('loop stopped')
   } else {
     // Generate a random BPM within the range of 120-140
-    const randomBPM = Math.floor(Math.random() * (140 - 120 + 1) + 120)
+    const randomBPM = Math.floor(Math.random() * (140 - 120 + 1) + 140)
 
     // Set the BPM for the loop
     Tone.Transport.bpm.value = randomBPM
