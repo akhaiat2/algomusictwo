@@ -34,27 +34,13 @@ const chordPattern = new Tone.Pattern((time, chord) => {
   chordSynth.triggerAttackRelease(chord, '4n', time)
 }, chordProgression, 'random')
 
-// Create an array of vocal samples
-const vocalSamples = [
-  'wav/vocal1.wav'
-]
-
-// Create a vocal sample player
-const vocalPlayer = new Tone.Player().toDestination()
-
 // Create a loop to repeat the drum pattern, bass pattern, and chord pattern
 const loop = new Tone.Loop((time) => {
   drumPattern.start(time)
   bassPattern.start(time)
   chordPattern.start(time)
-
-  // Randomly select a vocal sample
-  const randomIndex = Math.floor(Math.random() * vocalSamples.length)
-  const vocalSample = vocalSamples[randomIndex]
-  vocalPlayer.load(vocalSample, () => {
-    vocalPlayer.start(time)
-  })
 }, '4n')
+
 
 let isLoopRunning = false
 
@@ -71,7 +57,15 @@ button.addEventListener('click', () => {
   }
 })
 
+// Create an array of vocal samples
+const vocalSamples = [
+  'wav/vocal1.wav'
+]
+
 function toggleLoop () {
+  // Create a vocal sample player
+  const vocalPlayer = new Tone.Player().toDestination()
+
   if (isLoopRunning) {
     Tone.Transport.stop()
     isLoopRunning = false
@@ -84,6 +78,11 @@ function toggleLoop () {
     // Set the BPM for the loop
     Tone.Transport.bpm.value = randomBPM
     console.log(randomBPM + ' bpm')
+    const randomIndex = Math.floor(Math.random() * vocalSamples.length)
+    const vocalSample = vocalSamples[randomIndex]
+    vocalPlayer.load(vocalSample, () => {
+      vocalPlayer.start(0)
+    })
 
     // Load the drum samples and start the loop when samples are loaded
     Tone.loaded().then(() => {
